@@ -1,0 +1,42 @@
+version: "3.8"
+
+services:
+  db:
+    image: postgres:15
+    container_name: pg_db
+    environment:
+      POSTGRES_DB: pcreation
+      POSTGRES_USER: your_username
+      POSTGRES_PASSWORD: your_password
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  directus:
+    image: directus/directus:11.13.4
+    container_name: directus_app
+    depends_on:
+      - db
+    ports:
+      - "8055:8055"
+    environment:
+      KEY: "some-random-key"
+      SECRET: "some-random-secret"
+
+      DB_CLIENT: "postgres"
+      DB_HOST: "db"
+      DB_PORT: "5432"
+      DB_DATABASE: "pcreation"
+      DB_USER: "your_username"
+      DB_PASSWORD: "your_password"
+
+      PORT: "8055"
+      PUBLIC_URL: "http://localhost:8055"
+    volumes:
+      - ./uploads:/directus/uploads
+      - ./extensions:/directus/extensions
+    restart: unless-stopped
+
+volumes:
+  pgdata:
