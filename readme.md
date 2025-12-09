@@ -50,5 +50,5 @@ await client.login({
   password: "password",
 });
 
-Step 6: Run the Data Fetch File
+## Step 6: Run the Data Fetch File
 node printdata.js
